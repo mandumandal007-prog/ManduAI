@@ -1,0 +1,33 @@
+# Env
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+backend/node_modules/
+npm-debug.log*
+
+# Android / Gradle
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+android/captures/
+*.iml
+*.hprof
+*.apk
+*.aab
+*.keystore
+*.jks
+
+# Prisma
+backend/prisma/migrations/dev.db*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
