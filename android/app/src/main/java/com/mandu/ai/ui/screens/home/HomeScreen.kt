@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.runtime.getValue
 import com.mandu.ai.ui.screens.chat.ChatViewModel
 
 @Composable
@@ -24,7 +25,7 @@ fun HomeScreen(
     onOpenSearch: () -> Unit,
     chatVm: ChatViewModel = hiltViewModel(),
 ) {
-    val state by chatVm.state.collectAsStateWithLifecycle()
+    val chatState = chatVm.state.collectAsStateWithLifecycle().value
     Column(modifier = Modifier.fillMaxSize().padding(24.dp)) {
         Text("Mandu AI", style = MaterialTheme.typography.headlineMedium)
         Text("Your personal AI assistant", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(bottom = 24.dp))
@@ -38,7 +39,7 @@ fun HomeScreen(
             QuickCard("Search", Icons.Default.Search, Modifier.weight(1f), onOpenSearch)
         }
         Text("Recent chats", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(top = 24.dp, bottom = 8.dp))
-        state.conversations.take(5).forEach { c ->
+        chatState.conversations.take(5).forEach { c ->
             ListItem(
                 headlineContent = { Text(c.title) },
                 modifier = Modifier.fillMaxWidth(),

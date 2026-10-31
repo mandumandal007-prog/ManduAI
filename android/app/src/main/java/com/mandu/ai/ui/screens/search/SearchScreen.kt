@@ -8,7 +8,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -49,7 +49,7 @@ class SearchViewModel @Inject constructor(private val repo: SearchRepository) : 
 fun SearchScreen(onBack: () -> Unit, vm: SearchViewModel = hiltViewModel()) {
     val state by vm.state.collectAsState()
     var query by remember { mutableStateOf("") }
-    val uri = LocalUriHandler.current
+    val ctx = LocalContext.current
     Scaffold(topBar = { TopAppBar(title = { Text("Search") }, navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, null) } }) }) { pad ->
         Column(modifier = Modifier.fillMaxSize().padding(pad).padding(16.dp)) {
             OutlinedTextField(value = query, onValueChange = { query = it }, label = { Text("Search the web") }, modifier = Modifier.fillMaxWidth())
@@ -64,7 +64,7 @@ fun SearchScreen(onBack: () -> Unit, vm: SearchViewModel = hiltViewModel()) {
                         headlineContent = { Text(r.title, fontWeight = FontWeight.SemiBold) },
                         supportingContent = { Text(r.snippet ?: "") },
                         modifier = Modifier.fillMaxWidth(),
-                        trailingContent = { TextButton(onClick = { try { uri.open(r.url) } catch (_: Exception) {} }) { Text("Open") } },
+                        trailingContent = { TextButton(onClick = { try { android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(r.url)).also { ctx.startActivity(it) } } catch (_: Exception) {} }) { Text("Open") } },
                     )
                 }
             }
