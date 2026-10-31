@@ -6,6 +6,7 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import com.mandu.ai.BuildConfig
 import com.mandu.ai.core.data.ManduApi
 import com.mandu.ai.core.data.local.ManduDatabase
+import com.mandu.ai.core.data.local.ChatDao
 import com.mandu.ai.core.data.local.SessionStore
 import dagger.Module
 import dagger.Provides
@@ -56,6 +57,9 @@ object AppModule {
     @Provides @Singleton
     fun database(@ApplicationContext ctx: Context): ManduDatabase =
         ManduDatabase.build(ctx)
+
+    @Provides
+    fun chatDao(db: ManduDatabase): ChatDao = db.chatDao()
 
     @Provides @Singleton
     fun sessionStore(@ApplicationContext ctx: Context, json: Json): SessionStore =
